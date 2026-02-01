@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Nomad: The Path to Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="A gamified journey to learn Neural Networks. Master the perceptron, gradient descent, and deep learning visually.">
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="header-left">
+                <h1>Neural Nomad</h1>
+                <span class="subtitle">The Path to Prediction</span>
+            </div>
+            <div class="level-indicator">
+                <span id="current-level-text">Level 1</span>
+                <div class="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+            </div>
+            <button id="reset-btn" class="glow-btn danger">Reset Brain</button>
+        </header>
+
+        <main class="main-layout">
+            <section id="game-area" class="card glass-panel">
+                <!-- Dynamic Level Content Injected Here -->
+                <div id="level-content"></div>
+                
+                <div class="controls-area">
+                    <button id="next-level-btn" class="glow-btn hidden">Next Level ➔</button>
+                </div>
+            </section>
+
+            <aside id="sidebar">
+                <div class="sidebar-card glass-panel">
+                    <h3>Live Brain</h3>
+                    <canvas id="brain-canvas" width="300" height="300"></canvas>
+                    <div id="brain-status">Output: <span id="brain-output">0.00</span></div>
+                </div>
+
+                <div class="sidebar-card glass-panel log-panel">
+                    <h3>Log Window</h3>
+                    <div id="log-content">
+                        <p class="log-entry system">> Neural Link Initialized...</p>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <section id="code-drawer" class="glass-panel collapsed">
+            <div class="drawer-handle" id="toggle-code">
+                <span>View Code (Keras/TensorFlow)</span>
+                <span class="arrow">▲</span>
+            </div>
+            <div class="code-content">
+                <pre><code id="code-block" class="language-python"># Code will appear here...</code></pre>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
