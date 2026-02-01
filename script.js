@@ -20,7 +20,8 @@ const dom = {
     brainOutput: document.getElementById('brain-output'),
     codeBlock: document.getElementById('code-block'),
     codeDrawer: document.getElementById('code-drawer'),
-    toggleCode: document.getElementById('toggle-code')
+    toggleCode: document.getElementById('toggle-code'),
+    levelNav: document.getElementById('level-nav')
 };
 
 /* --- AUDIO ENGINE --- */
@@ -85,21 +86,21 @@ class BrainVisualizer {
             this.ctx.beginPath();
             this.ctx.moveTo(20, y);
             this.ctx.lineTo(cx - r, cy);
-            this.ctx.strokeStyle = '#00f7ff';
+            this.ctx.strokeStyle = '#007bff';
             this.ctx.stroke();
         });
 
         // Label: Dendrites
-        this.ctx.fillStyle = '#00f7ff';
+        this.ctx.fillStyle = '#007bff';
         this.ctx.font = 'bold 12px Outfit';
         this.ctx.fillText("Dendrites", 10, cy - 80);
-        this.ctx.fillStyle = '#666';
+        this.ctx.fillStyle = '#555';
         this.ctx.fillText("(Inputs)", 10, cy - 65);
 
         // Label: Synapse (on the line)
-        this.ctx.fillStyle = '#ffff00'; // Yellow for synapse
+        this.ctx.fillStyle = '#cc6600'; // Dark Orange for Synapse
         this.ctx.fillText("Synapse", 80, cy - 40);
-        this.ctx.fillStyle = '#666';
+        this.ctx.fillStyle = '#555';
         this.ctx.fillText("(Weight)", 80, cy - 25);
 
 
@@ -112,7 +113,7 @@ class BrainVisualizer {
 
         this.ctx.beginPath();
         this.ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        this.ctx.fillStyle = `rgba(20, 20, 35, 0.9)`;
+        this.ctx.fillStyle = `#ffffff`;
         this.ctx.fill();
 
         this.ctx.strokeStyle = `rgb(${255 * intensity}, 0, 255)`;
@@ -122,32 +123,32 @@ class BrainVisualizer {
         this.ctx.shadowBlur = 0;
 
         // Label: Cell Body
-        this.ctx.fillStyle = '#fff';
+        this.ctx.fillStyle = '#000';
         this.ctx.font = 'bold 14px Outfit';
         this.ctx.textAlign = 'center';
         this.ctx.fillText("Cell Body", cx, cy - 10);
         this.ctx.font = '12px Outfit';
-        this.ctx.fillStyle = '#aaa';
+        this.ctx.fillStyle = '#555';
         this.ctx.fillText("(Summation)", cx, cy + 10);
 
         // 3. Output (Axon)
         this.ctx.beginPath();
         this.ctx.moveTo(cx + r, cy);
         this.ctx.lineTo(this.width - 20, cy);
-        this.ctx.strokeStyle = '#ff00ff';
+        this.ctx.strokeStyle = '#cc0000'; // Dark Red
         this.ctx.lineWidth = 3 + (intensity * 4);
         this.ctx.stroke();
 
         // Label: Axon
-        this.ctx.fillStyle = '#ff00ff';
+        this.ctx.fillStyle = '#cc0000'; // Dark Red
         this.ctx.textAlign = 'right';
         this.ctx.font = 'bold 12px Outfit';
         this.ctx.fillText("Axon", this.width - 40, cy - 20);
-        this.ctx.fillStyle = '#666';
+        this.ctx.fillStyle = '#555';
         this.ctx.fillText("(Output)", this.width - 40, cy - 5);
 
         // Output Value Label
-        this.ctx.fillStyle = '#fff';
+        this.ctx.fillStyle = '#000';
         this.ctx.font = 'bold 16px Outfit';
         this.ctx.textAlign = 'left';
         this.ctx.fillText(`y = ${this.neuronState.output.toFixed(2)}`, this.width - 60, cy + 20);
@@ -193,6 +194,30 @@ async function init() {
         renderLevel(1);
         log("System Reset.");
     });
+
+    renderNav();
+}
+
+function renderNav() {
+    dom.levelNav.innerHTML = '';
+    for (let i = 1; i <= appState.maxLevels; i++) {
+        const circle = document.createElement('div');
+        circle.className = `nav-circle ${i === appState.currentLevel ? 'active' : ''}`;
+        circle.textContent = i;
+        circle.addEventListener('click', () => {
+            appState.currentLevel = i;
+            renderLevel(i);
+        });
+        dom.levelNav.appendChild(circle);
+    }
+}
+
+function updateNavState(levelId) {
+    const circles = dom.levelNav.querySelectorAll('.nav-circle');
+    circles.forEach((c, idx) => {
+        if (idx + 1 === levelId) c.classList.add('active');
+        else c.classList.remove('active');
+    });
 }
 
 function renderLevel(levelId) {
@@ -204,6 +229,7 @@ function renderLevel(levelId) {
     dom.progressBar.style.width = `${(levelId / appState.maxLevels) * 100}%`;
     dom.codeBlock.textContent = data.codeSnippet;
     dom.nextBtn.classList.add('hidden'); // Hide until complete
+    updateNavState(levelId);
     log(`Entering ${data.title}...`, 'info');
 
     // Clear and build content
@@ -313,15 +339,18 @@ function setupLevel2(container, data) {
 
     // Render Controls
     const inputsDiv = document.createElement('div');
-    inputsDiv.innerHTML = "<h4>Inputs (Features)</h4>";
+    inputsDiv.className = 'perceptron-section inputs';
+    inputsDiv.innerHTML = "<h4>My Situation (Inputs)</h4><p style='color:#a0a0b0; font-size:0.9rem; margin-bottom:1rem;'>The Facts: Am I sleepy? Is it raining? Rate my Attendance (0-10).</p>";
     inputs.forEach(i => inputsDiv.appendChild(createSlider(i, 'input')));
 
     const weightsDiv = document.createElement('div');
-    weightsDiv.innerHTML = "<h4>Weights (Importance)</h4>";
+    weightsDiv.className = 'perceptron-section weights';
+    weightsDiv.innerHTML = "<h4>My Priorities (Weights)</h4><p style='color:#a0a0b0; font-size:0.9rem; margin-bottom:1rem;'>Positive = Excuses (Bed). Negative = Duty (Class).</p>";
     weights.forEach(w => weightsDiv.appendChild(createSlider(w, 'weight')));
 
     const biasDiv = document.createElement('div');
-    biasDiv.innerHTML = "<h4>Bias (Offset)</h4>";
+    biasDiv.className = 'perceptron-section bias';
+    biasDiv.innerHTML = "<h4>My Baseline (Bias)</h4><p style='color:#a0a0b0; font-size:0.9rem; margin-bottom:1rem;'>Am I generally lazy today?</p>";
     biasDiv.appendChild(createSlider(data.bias, 'bias'));
 
     container.append(inputsDiv, weightsDiv, biasDiv);
@@ -346,11 +375,14 @@ function setupLevel2(container, data) {
         const y = 1 / (1 + Math.exp(-z));
 
         brainViz.update(y);
-        log(`z = ${z.toFixed(2)} | Output = ${y.toFixed(4)}`);
+        log(`Laziness Score (z) = ${z.toFixed(2)} | Probability to Skip = ${(y * 100).toFixed(1)}%`);
 
-        if (y > 0.8) {
-            log("High Vibe Score! Decision: YES", 'success');
+        if (y > 0.5) {
+            log("RESULT: TOO LAZY 🛌 (SKIP)", 'error');
+            // Using error color for 'bad' behavior (skipping class)
             dom.nextBtn.classList.remove('hidden');
+        } else {
+            log("RESULT: DUTY WINS 🎓 (GO)", 'success');
         }
     };
 
@@ -366,10 +398,24 @@ function setupLevel3(container, data) {
     const parent = document.createElement('div');
     parent.className = 'mountain-game';
 
+    // Info Panel for Story
+    const infoPanel = document.createElement('div');
+    infoPanel.style.position = 'absolute';
+    infoPanel.style.top = '10px';
+    infoPanel.style.left = '10px';
+    infoPanel.style.color = '#000';
+    infoPanel.style.zIndex = '10';
+    infoPanel.innerHTML = `
+        <div style="margin-bottom:5px;">🎯 <strong>True Sales:</strong> $10,400</div>
+        <div style="margin-bottom:5px;">🤖 <strong>AI Guess:</strong> <span id="current-guess" style="color:#cc0000">$12,310</span></div>
+        <div>📉 <strong>Error (Cost):</strong> <span id="current-error" style="color:#cc6600">High</span></div>
+    `;
+    parent.appendChild(infoPanel);
+
     const canvas = document.createElement('canvas');
     canvas.className = 'curve-canvas';
     canvas.width = 600;
-    canvas.height = 400; // Match CSS
+    canvas.height = 400;
     parent.appendChild(canvas);
 
     const ball = document.createElement('div');
@@ -378,100 +424,264 @@ function setupLevel3(container, data) {
 
     const trainBtn = document.createElement('button');
     trainBtn.className = 'glow-btn';
-    trainBtn.textContent = 'Train Step (Update Weights)';
+    trainBtn.textContent = 'Train Step (Push Ball Down)';
     trainBtn.style.marginTop = '1rem';
 
     container.appendChild(parent);
     container.appendChild(trainBtn);
 
     const ctx = canvas.getContext('2d');
-    let currentWeight = -8; // Start far left
-    const minWeight = 0;
 
-    // Draw Curve: Loss = w^2 (Parabola)
+    // Simulation State
+    let currentError = -8;
+
     const drawCurve = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 1. Draw Axis & Labels
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.strokeStyle = '#fff';
+        // Y-Axis
+        ctx.moveTo(canvas.width / 2, 20);
+        ctx.lineTo(canvas.width / 2, canvas.height - 20);
+        ctx.stroke();
+
+        ctx.fillStyle = '#aaa';
+        ctx.font = '12px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText("HIGH COST ($$$ Lost)", canvas.width / 2, 40);
+        ctx.fillText("ZERO COST (Perfection)", canvas.width / 2, canvas.height - 10);
+
+        // 2. Draw Parabola (The Error Mountain)
+        ctx.beginPath();
+        ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
 
-        // Map x (-10 to 10) to width (0 to 600)
-        // Map y (0 to 100) to height (400 to 0)
-
         const mapX = (x) => (x + 10) * (canvas.width / 20);
-        const mapY = (y) => canvas.height - (y * (canvas.height / 120));
+        const mapY = (y) => canvas.height - (y * (canvas.height / 120)) - 30; // Shifted up slightly
 
-        ctx.moveTo(mapX(-10), mapY(100)); // Start (-10)^2 = 100
+        ctx.moveTo(mapX(-10), mapY(100));
         for (let x = -10; x <= 10; x += 0.5) {
             ctx.lineTo(mapX(x), mapY(x * x));
         }
         ctx.stroke();
 
-        // Update Ball Position
-        const ballX = mapX(currentWeight);
-        const ballY = mapY(currentWeight * currentWeight);
+        // 3. Update Ball Position
+        const ballX = mapX(currentError);
+        const ballY = mapY(currentError * currentError);
 
-        ball.style.left = `${ballX - 10}px`; // center
+        ball.style.left = `${ballX - 10}px`;
         ball.style.top = `${ballY - 10}px`;
+
+        // 4. Update Text Stats
+        const guessVal = 10.4 + (Math.abs(currentError) * 0.238);
+        document.getElementById('current-guess').textContent = `$${(guessVal * 1000).toLocaleString().split('.')[0]}`;
+
+        const costVal = Math.floor(currentError * currentError * 100);
+        document.getElementById('current-error').textContent = `$${costVal} (Loss)`;
     };
 
     drawCurve();
 
     trainBtn.addEventListener('click', () => {
-        // Gradient Descent Logic
-        // Loss = w^2 -> dLoss/dw = 2w
-        const gradient = 2 * currentWeight;
-        const learningRate = 0.2; // exaggerated for visual
+        // Gradient: slope = 2*x
+        const gradient = 2 * currentError;
+        const learningRate = 0.2;
 
-        const oldW = currentWeight;
-        currentWeight = currentWeight - (learningRate * gradient);
+        const oldError = currentError;
+        // Move opposite to gradient to minimize
+        currentError = currentError - (learningRate * gradient);
 
-        log(`w: ${oldW.toFixed(2)} -> ${currentWeight.toFixed(2)} | Gradient: ${gradient.toFixed(2)}`);
+        log(`Prediction closer! Cost dropped from ${Math.floor(oldError ** 2 * 100)} to ${Math.floor(currentError ** 2 * 100)}`);
 
-        if (Math.abs(gradient) < 0.5) {
+        if (Math.abs(currentError) < 0.5) {
+            currentError = 0; // Snap to finish
+            drawCurve();
+            document.getElementById('current-error').textContent = "$0 (Perfect!)";
+            document.getElementById('current-guess').textContent = "$10,400";
+
             playSound('success');
-            log("Convergence Reached! Error minimized.", 'success');
+            log("SUCCESS! The AI reached the bottom of the Valley of Error.", 'success');
             dom.nextBtn.classList.remove('hidden');
+            trainBtn.disabled = true;
+            trainBtn.textContent = "Model Trained";
         } else {
-            playSound(); // Simple beep
+            playSound();
+            drawCurve();
         }
-        drawCurve();
     });
 }
 
 /* --- LEVEL 4: MLP VISUALIZER --- */
+/* --- LEVEL 4: MLP VISUALIZER (The AI Chef) --- */
 function setupLevel4(container, data) {
     container.className = "mlp-container";
+
+    // Store nodes for line drawing
+    const allLayers = [];
+
+    // Define specific roles for the Hidden Layer (The Tasters)
+    const hiddenRoles = [
+        { icon: '🧂', name: 'Salty Scanner', desc: 'Checks for Cheese' },
+        { icon: '🍅', name: 'Acidity Detector', desc: 'Checks for Tomato' },
+        { icon: '🌿', name: 'Aroma Analyst', desc: 'Smells the Basil' },
+        { icon: '⚖️', name: 'Balance Bot', desc: 'Checks ratio of All Ingredients' }
+    ];
 
     data.layers.forEach((layerName, layerIdx) => {
         const col = document.createElement('div');
         col.className = 'layer';
-
+        col.id = `layer-${layerIdx}`;
         col.innerHTML = `<div class="layer-title">${layerName}</div>`;
 
-        const count = layerIdx === 1 ? 4 : (layerIdx === 2 ? 1 : 3); // 3 inputs, 4 hidden, 1 output
+        const count = layerIdx === 1 ? 4 : (layerIdx === 2 ? 1 : 3);
+        const layerNodes = [];
 
         for (let i = 0; i < count; i++) {
             const node = document.createElement('div');
             node.className = 'neuron';
-            node.innerHTML = count === 1 ? '🍕' : (layerIdx === 0 ? ['🍅', '🧀', '🌿'][i] : '⚡');
-            col.appendChild(node);
+            node.dataset.layer = layerIdx;
+            node.dataset.idx = i;
 
+            // Assign Content based on Layer
+            if (layerIdx === 0) {
+                // Input: Ingredients
+                const labels = ['🍅', '🧀', '🌿'];
+                const names = ['Tomato', 'Cheese', 'Basil'];
+                node.innerHTML = labels[i];
+                node.dataset.role = names[i];
+            } else if (layerIdx === 1) {
+                // Hidden: Tasters
+                node.innerHTML = hiddenRoles[i].icon;
+                node.dataset.role = hiddenRoles[i].name;
+                node.dataset.desc = hiddenRoles[i].desc;
+                // Add a small tooltip-like label below
+                const label = document.createElement('div');
+                label.style.fontSize = '10px';
+                label.style.marginTop = '5px';
+                label.style.color = '#555';
+                label.innerText = hiddenRoles[i].name.split(' ')[0]; // Short name
+                node.appendChild(label);
+            } else {
+                // Output: Pizza check
+                node.innerHTML = '🍕';
+                node.dataset.role = "Final Verdict";
+            }
+
+            // Interaction
             node.addEventListener('mouseenter', () => {
-                log(`Inspecting ${layerName}: Node ${i + 1}`);
-                brainViz.update(Math.random()); // Random flicker
+                activatePath(layerIdx, i, allLayers);
+
+                // Smart Logging based on Layer
+                if (layerIdx === 0) {
+                    log(`Input '${node.dataset.role}' is being sent to ALL Tasters (Hidden Layer) to be analyzed.`, 'info');
+                } else if (layerIdx === 1) {
+                    log(`Hidden Neuron '${node.dataset.role}': "${node.dataset.desc}"`, 'success');
+                } else {
+                    log("Output: The Chef combines all Taster reports to decide: PIZZA!", 'success');
+                }
+
                 playSound();
             });
+
+            node.addEventListener('mouseleave', () => {
+                clearPaths();
+            });
+
+            col.appendChild(node);
+            layerNodes.push(node);
         }
+        allLayers.push(layerNodes);
         container.appendChild(col);
     });
 
-    log("Network fully connected.", 'success');
-    setTimeout(() => {
-        log("Training Complete! The AI can now predict Pizza orders.");
-        alert("Congratulations! You've built a Neural Network!");
-    }, 2000);
+    // Canvas for lines
+    const canvas = document.createElement('canvas');
+    canvas.id = 'mlp-lines';
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '0';
+    container.style.position = 'relative';
+    container.insertBefore(canvas, container.firstChild);
+
+    // Draw Lines Logic
+    function activatePath(activeLayer, activeIdx, layers) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        layers[activeLayer][activeIdx].classList.add('active');
+
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+
+        // Strategy: 
+        // 1. If Input hovered -> Show lines to ALL Hidden (Yellow)
+        // 2. If Hidden hovered -> Show lines from ALL Inputs (Cyan) AND to Output (Yellow)
+
+        if (activeLayer === 0) {
+            // Input -> Hidden
+            ctx.strokeStyle = '#cc6600'; // Dark Orange
+            connectToNextLayer(ctx, layers[0][activeIdx], layers[1]);
+        } else if (activeLayer === 1) {
+            // Input -> Hidden (Backwards trace)
+            ctx.strokeStyle = '#007bff'; // Blue for "Sources"
+            connectFromPrevLayer(ctx, layers[1][activeIdx], layers[0]);
+
+            // Hidden -> Output (Forward trace)
+            ctx.strokeStyle = '#cc6600'; // Dark Orange
+            connectToNextLayer(ctx, layers[1][activeIdx], layers[2]);
+        } else if (activeLayer === 2) {
+            // Hidden -> Output (Backwards)
+            ctx.strokeStyle = '#007bff'; // Blue
+            connectFromPrevLayer(ctx, layers[2][activeIdx], layers[1]);
+        }
+    }
+
+    function connectToNextLayer(ctx, sourceNode, targetNodes) {
+        targetNodes.forEach(target => {
+            drawLine(ctx, sourceNode, target);
+        });
+    }
+
+    function connectFromPrevLayer(ctx, targetNode, sourceNodes) {
+        sourceNodes.forEach(source => {
+            drawLine(ctx, source, targetNode);
+        });
+    }
+
+    function drawLine(ctx, n1, n2) {
+        const r1 = n1.getBoundingClientRect();
+        const r2 = n2.getBoundingClientRect();
+        const cRect = container.getBoundingClientRect();
+
+        const x1 = r1.left + r1.width / 2 - cRect.left;
+        const y1 = r1.top + r1.height / 2 - cRect.top;
+        const x2 = r2.left + r2.width / 2 - cRect.left;
+        const y2 = r2.top + r2.height / 2 - cRect.top;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.globalAlpha = 0.6;
+        ctx.stroke();
+    }
+
+    function clearPaths() {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.querySelectorAll('.neuron').forEach(n => n.classList.remove('active'));
+    }
+
+    log("The AI Kitchen is ready. Hover over the 'Taste Testers' (Middle Layer) to see what they do!", 'info');
 }
+
 
 // Start
 init();

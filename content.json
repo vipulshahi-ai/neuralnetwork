@@ -1,57 +1,57 @@
 {
-    "appTitle": "Neural Network: The Path to Prediction",
+    "appTitle": "Neural Network",
     "levels": [
         {
             "id": 1,
             "title": "Brain vs. Computer",
-            "description": "Computers try to copy how our brains work. Let's translate 'Biology' into 'Computer Logic'.",
-            "instruction": "Drag the human body part to its computer equivalent.",
+            "description": "Computers mimic our brains. Let's map Biology to Logic.",
+            "instruction": "Connect the biological parts to their computer roles.",
             "pairs": [
                 {
-                    "bio": "Eyes & Ears",
+                    "bio": "Eyes/Ears (Sensors)",
                     "comp": "Inputs (x)",
                     "id": "pair1"
                 },
                 {
-                    "bio": "Brain Neurons",
-                    "comp": "Processing (Summation)",
+                    "bio": "Neuron (Processor)",
+                    "comp": "Summation (Σ)",
                     "id": "pair2"
                 },
                 {
-                    "bio": "Mouth/Hands",
-                    "comp": "Output (y)",
+                    "bio": "Action (Output)",
+                    "comp": "Result (y)",
                     "id": "pair3"
                 },
                 {
-                    "bio": "Memory Strength",
-                    "comp": "Weight (Importance)",
+                    "bio": "Synapse (Connection)",
+                    "comp": "Weight (w)",
                     "id": "pair4"
                 }
             ],
-            "codeSnippet": "# 1. Inputs: Information coming in (like what you see)\ninputs = [1.0, 0.5, -1.0]\n\n# 2. Weights: How important is that info?\nweights = [0.8, 0.1, 0.5]\n\n# 3. Processing: The computer 'thinks' by doing math.\n# (We'll do this math in the next level)"
+            "codeSnippet": "# Biology -> Code\n# Eyes = Inputs\n# Synapse Strength = Weights\n# Firing = Output"
         },
         {
             "id": 2,
-            "title": "The Decision Maker",
-            "description": "This simple AI decides: 'Should I go to class?' based on 3 things.",
-            "instruction": "Adjust the 'Importance' sliders (Weights) to change the decision.",
+            "title": "To Skip or Not to Skip?",
+            "description": "We are calculating a <strong>'LAZINESS SCORE'</strong>.<br><br><ul style='margin-left: 20px; line-height: 1.8;'><li><span style='color:#cc0000'><strong>Positive Weight (+):</strong></span> Increases Laziness (Excuses). <br><em>'My bed is comfy' ➝ Pushes me to <strong>SKIP</strong>.</em></li><li><span style='color:#0044cc'><strong>Negative Weight (-):</strong></span> Decreases Laziness (Duty). <br><em>'My grades matter' ➝ Pulls me to <strong>CLASS</strong>.</em></li></ul><br><strong>Think of it as a Tug-of-War:</strong><br>Sleep pulls you <strong>UP (+)</strong>. Attendance pulls you <strong>DOWN (-)</strong>.",
+            "instruction": "Adjust weights: Can your **Duty** (Negative) overpower your **Laziness** (Positive)?",
             "inputs": [
                 {
-                    "label": "Did I Sleep well?",
+                    "label": "Sleep Hours",
                     "id": "x1",
                     "default": 8,
                     "min": 0,
                     "max": 12
                 },
                 {
-                    "label": "Do I usually attend?",
+                    "label": "Attendance (0-10)",
                     "id": "x2",
-                    "default": 90,
+                    "default": 9,
                     "min": 0,
-                    "max": 100
+                    "max": 10
                 },
                 {
-                    "label": "Is it Raining? (0=No)",
+                    "label": "Rain",
                     "id": "x3",
                     "default": 0,
                     "min": 0,
@@ -60,15 +60,15 @@
             ],
             "weights": [
                 {
-                    "label": "Importance of Sleep",
+                    "label": "Love for Sleep (+)",
                     "id": "w1",
-                    "default": 0.3,
+                    "default": 0.5,
                     "min": -1,
                     "max": 1,
                     "step": 0.1
                 },
                 {
-                    "label": "Importance of Attendance",
+                    "label": "Fear of Bad Grades (-)",
                     "id": "w2",
                     "default": -0.5,
                     "min": -1,
@@ -76,45 +76,45 @@
                     "step": 0.1
                 },
                 {
-                    "label": "Importance of Rain",
+                    "label": "Dislike of Rain (+)",
                     "id": "w3",
-                    "default": 0.8,
+                    "default": 0.5,
                     "min": -1,
                     "max": 1,
                     "step": 0.1
                 }
             ],
             "bias": {
-                "label": "Laziness Level (Bias)",
+                "label": "Lazy Personality",
                 "id": "b",
-                "default": 2.0,
+                "default": 0,
                 "min": -5,
                 "max": 5,
                 "step": 0.5
             },
-            "codeSnippet": "# Decision Logic:\n# calculate score = (Sleep * Importance) + (Rain * Importance) ...\n\n# If score is high -> YES (1)\n# If score is low -> NO (0)"
+            "codeSnippet": "# The Laziness Equation:\n# Score = (Sleep * Love) + (Attendance * Fear) + Laziness\n\n# If Fear (Negative) is strong enough,\n# it cancels out the Love for sleep!"
         },
         {
             "id": 3,
-            "title": "Learning from Mistakes",
-            "description": "How does AI learn? It makes a guess, checks the error, and adjusts itself.",
-            "instruction": "The ball is the AI's 'Error'. Click 'Train' to make the error go down to zero.",
+            "title": "The Valley of Error (Gradient Descent)",
+            "description": "<strong>The Analogy:</strong> Imagine the AI is stuck on a 'Mountain of Mistakes'.<br><br><ul style='margin-left: 20px; line-height: 1.5;'><li>📈 <strong>Height = Error:</strong> Being high up means the AI is making a <strong>HUGE Mistake</strong> (Cost is High).</li><li>📉 <strong>Bottom = Perfection:</strong> The goal is to roll down to the very bottom where the Error is <strong>Zero</strong>.</li></ul><br>The <strong>'Gradient'</strong> is just the slope. The AI feels the slope and rolls down, learning from its mistake.",
+            "instruction": "Click 'Train' to push the ball down the slope. Watch the **Error Cost** drop as it gets closer to the bottom!",
             "learningRate": 0.01,
             "targetY": 1,
             "startWeight": -4,
-            "codeSnippet": "# Training Loop:\n# 1. Measure Error (Mistake)\nmistake = (prediction - answer)**2\n\n# 2. Adjust Weight to reduce mistake\nweight = weight - (learning_rate * slope)"
+            "codeSnippet": "# Gradient Descent (The Learning Loop):\n\n# 1. Am I High up (Big Error)?\nerror = (Guess - True_Value)**2\n\n# 2. Which way is down?\nslope = 2 * error \n\n# 3. Take a step down!\nnew_guess = old_guess - (learning_rate * slope)"
         },
         {
             "id": 4,
-            "title": "The Pizza Brain (Deep Learning)",
-            "description": "One neuron is too simple. A whole network of neurons can learn complex recipes!",
-            "instruction": "Hover over the circles to see how ingredients become a Pizza.",
+            "title": "The AI Chef (Deep Learning)",
+            "description": "<strong>Story:</strong> A single neuron is like a simple line cook. It can only make one decision. <br><br>But a <strong>Neural Network</strong> is like a <strong>Master Chef</strong>. It connects many cooks (neurons) together to understand complex recipes.<br><br><ul style='margin-left: 20px; line-height: 1.5;'><li><strong>Input Layer:</strong> The Raw Ingredients (Tomato, Cheese, Basil).</li><li><strong>Hidden Layer:</strong> The Line Cooks tasting combinations (Sweet? Salty?).</li><li><strong>Output Layer:</strong> The Head Chef helping decide: <em>'Is this a Perfect Pizza?'</em></li></ul>",
+            "instruction": "Hover over the ingredients to trace how the information flows through the kitchen to create the final Pizza!",
             "layers": [
-                "Ingredients",
-                "Kitchen Chefs",
-                "Final Pizza"
+                "Raw Ingredients",
+                "Taste Testers (Hidden)",
+                "The Verdict"
             ],
-            "codeSnippet": "# Neural Network for Pizza:\nmodel = Sequential([\n  Dense(4), # Chefs mixing ingredients\n  Dense(1)  # Final Taster deciding quality\n])"
+            "codeSnippet": "# The AI Kitchen (Deep Network):\nmodel = Sequential([\n  # Layer 1: Taste different flavors\n  Dense(4, activation='relu'), \n\n  # Layer 2: Final Verdict (Pizza?)\n  Dense(1, activation='sigmoid')\n])"
         }
     ]
 }

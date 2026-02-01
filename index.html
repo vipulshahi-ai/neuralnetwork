@@ -15,6 +15,19 @@
 </head>
 
 <body>
+    <div id="error-console"
+        style="display:none; background:red; color:white; padding:10px; position:fixed; top:0; left:0; width:100%; z-index:10000;">
+    </div>
+    <script>
+        window.onerror = function (msg, url, line) {
+            document.getElementById('error-console').style.display = 'block';
+            document.getElementById('error-console').innerHTML += `Error: ${msg} at line ${line}<br>`;
+        };
+        window.addEventListener('unhandledrejection', e => {
+            document.getElementById('error-console').style.display = 'block';
+            document.getElementById('error-console').innerHTML += `Promise Error: ${e.reason}<br>`;
+        });
+    </script>
     <div id="app">
         <header class="app-header">
             <div class="header-left">
@@ -30,6 +43,7 @@
             <button id="reset-btn" class="glow-btn danger">Reset Brain</button>
         </header>
 
+        <div id="level-nav"></div>
         <main class="main-layout">
             <section id="game-area" class="card glass-panel">
                 <!-- Dynamic Level Content Injected Here -->
@@ -43,7 +57,7 @@
             <aside id="sidebar">
                 <div class="sidebar-card glass-panel">
                     <h3>Live Brain</h3>
-                    <canvas id="brain-canvas" width="300" height="300"></canvas>
+                    <canvas id="brain-canvas" width="400" height="300"></canvas>
                     <div id="brain-status">Output: <span id="brain-output">0.00</span></div>
                 </div>
 
