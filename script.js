@@ -72,49 +72,74 @@ class BrainVisualizer {
     draw() {
         this.ctx.clearRect(0, 0, this.width, this.height);
 
-        // Draw Neuron Body
+        // Settings
         const cx = this.width / 2;
         const cy = this.height / 2;
-        const r = 40;
+        const r = 50; // Larger neuron
 
-        // Glow effect
-        if (this.neuronState.output > 0.5) {
-            this.ctx.shadowBlur = 20 * this.neuronState.output;
-            this.ctx.shadowColor = '#00f7ff';
-        } else {
-            this.ctx.shadowBlur = 0;
-        }
+        // 1. Inputs (Left lines)
+        this.ctx.lineWidth = 3;
+        const inputY = [cy - 50, cy, cy + 50];
+
+        inputY.forEach(y => {
+            this.ctx.beginPath();
+            this.ctx.moveTo(20, y);
+            this.ctx.lineTo(cx - r, cy);
+            this.ctx.strokeStyle = '#00f7ff';
+            this.ctx.stroke();
+        });
+
+        // Labels
+        this.ctx.fillStyle = '#bbb';
+        this.ctx.font = '12px Outfit';
+        this.ctx.fillText("Inputs", 10, cy - 70);
+
+        // 2. Neuron Body (Processing)
+        const intensity = this.neuronState.output; // 0 to 1
+
+        // Glow
+        this.ctx.shadowBlur = 30 * intensity;
+        this.ctx.shadowColor = `rgb(${255 * intensity}, ${247 - (100 * intensity)}, 255)`;
 
         this.ctx.beginPath();
         this.ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        this.ctx.fillStyle = `rgba(0, 247, 255, ${0.2 + this.neuronState.output * 0.8})`;
+        this.ctx.fillStyle = `rgba(20, 20, 35, 0.9)`; // Dark fill
         this.ctx.fill();
-        this.ctx.strokeStyle = '#fff';
-        this.ctx.lineWidth = 2;
+
+        // Border gets brighter with output
+        this.ctx.strokeStyle = `rgb(${255 * intensity}, 0, 255)`;
+        this.ctx.lineWidth = 4;
         this.ctx.stroke();
 
-        // Draw Dendrites (Inputs)
-        this.ctx.beginPath();
-        this.ctx.moveTo(cx - r, cy - 10);
-        this.ctx.lineTo(20, cy - 40);
-        this.ctx.moveTo(cx - r, cy);
-        this.ctx.lineTo(20, cy);
-        this.ctx.moveTo(cx - r, cy + 10);
-        this.ctx.lineTo(20, cy + 40);
-        this.ctx.strokeStyle = '#00f7ff';
-        this.ctx.stroke();
+        this.ctx.shadowBlur = 0; // Reset for text
 
-        // Draw Axon (Output)
+        // Text inside neuron
+        this.ctx.fillStyle = '#fff';
+        this.ctx.font = 'bold 14px Outfit';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText("LOGIC", cx, cy + 5);
+
+        // 3. Output (Right line)
         this.ctx.beginPath();
         this.ctx.moveTo(cx + r, cy);
         this.ctx.lineTo(this.width - 20, cy);
         this.ctx.strokeStyle = '#ff00ff';
+        this.ctx.lineWidth = 3 + (intensity * 4); // Thicker line when active
         this.ctx.stroke();
 
-        // Output Value
-        this.ctx.fillStyle = '#fff';
-        this.ctx.font = '14px Outfit';
-        this.ctx.fillText(`y = ${this.neuronState.output.toFixed(2)}`, cx + r + 10, cy - 10);
+        this.ctx.fillStyle = '#bbb';
+        this.ctx.font = '12px Outfit';
+        this.ctx.textAlign = 'right';
+        this.ctx.fillText("Output", this.width - 20, cy - 20);
+
+        // Output Value Label
+        this.ctx.fillStyle = '#ff00ff';
+        this.ctx.font = 'bold 16px Outfit';
+        this.ctx.textAlign = 'left';
+        this.ctx.fillText(this.neuronState.output.toFixed(2), this.width - 50, cy + 20);
+
+        // Reset Alignment
+        this.ctx.textAlign = 'left';
     }
 
     update(output) {
@@ -161,7 +186,7 @@ function renderLevel(levelId) {
     if (!data) return;
 
     // Update UI headers
-    dom.levelText.textContent = `Level ${levelId}: ${data.title}`;
+    dom.levelText.textContent = data.title;
     dom.progressBar.style.width = `${(levelId / appState.maxLevels) * 100}%`;
     dom.codeBlock.textContent = data.codeSnippet;
     dom.nextBtn.classList.add('hidden'); // Hide until complete

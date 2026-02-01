@@ -3,55 +3,55 @@
     "levels": [
         {
             "id": 1,
-            "title": "Level 1: The Bio-Link (Brain vs. Computer)",
-            "description": "Your brain uses biology to think. AI uses math. They are surprisingly similar!",
-            "instruction": "Match the biological part to what it does in an AI. Drag the terms on the left to the definitions on the right.",
+            "title": "Level 1: Brain vs. Computer",
+            "description": "Computers try to copy how our brains work. Let's translate 'Biology' into 'Computer Logic'.",
+            "instruction": "Drag the human body part to its computer equivalent.",
             "pairs": [
                 {
-                    "bio": "Dendrite (Receivers)",
-                    "comp": "Input (Receives Data)",
+                    "bio": "Eyes & Ears (Sensors)",
+                    "comp": "Inputs (x)",
                     "id": "pair1"
                 },
                 {
-                    "bio": "Cell Body (Processor)",
-                    "comp": "Summation (Adds it up)",
+                    "bio": "Brain Neurons (Thinking)",
+                    "comp": "Processing (Summation)",
                     "id": "pair2"
                 },
                 {
-                    "bio": "Axon (Sender)",
-                    "comp": "Output (Final Answer)",
+                    "bio": "Mouth/Hands (Action)",
+                    "comp": "Output (y)",
                     "id": "pair3"
                 },
                 {
-                    "bio": "Synapse (Connection Strength)",
+                    "bio": "Memory Strength",
                     "comp": "Weight (Importance)",
                     "id": "pair4"
                 }
             ],
-            "codeSnippet": "# 1. Inputs: Like Dendrites, they catch information.\ninputs = [1.0, 0.5, -1.0]\n\n# 2. Weights: Like Synapses, they decide importance.\nweights = [0.8, 0.1, 0.5]\n\n# 3. Summation: The Cell Body thinks!\n# (We'll do this math in the next level)"
+            "codeSnippet": "# 1. Inputs: Information coming in (like what you see)\ninputs = [1.0, 0.5, -1.0]\n\n# 2. Weights: How important is that info?\nweights = [0.8, 0.1, 0.5]\n\n# 3. Processing: The computer 'thinks' by doing math.\n# (We'll do this math in the next level)"
         },
         {
             "id": 2,
             "title": "Level 2: The Decision Maker",
-            "description": "This single neuron (Perceptron) decides: 'Should I go to class?' based on sleep, attendance, and rain.",
-            "instruction": "Adjust the 'Importance' (Weights) of each factor. Try to get the output above 0.5 to say YES!",
+            "description": "This simple AI decides: 'Should I go to class?' based on 3 things.",
+            "instruction": "Adjust the 'Importance' sliders (Weights) to change the decision.",
             "inputs": [
                 {
-                    "label": "How much Sleep? (Hours)",
+                    "label": "Did I Sleep well?",
                     "id": "x1",
                     "default": 8,
                     "min": 0,
                     "max": 12
                 },
                 {
-                    "label": "Current Attendance (%)",
+                    "label": "Do I usually attend?",
                     "id": "x2",
                     "default": 90,
                     "min": 0,
                     "max": 100
                 },
                 {
-                    "label": "Is it Raining? (0=No, 1=Yes)",
+                    "label": "Is it Raining? (0=No)",
                     "id": "x3",
                     "default": 0,
                     "min": 0,
@@ -85,36 +85,36 @@
                 }
             ],
             "bias": {
-                "label": "Bias (Base Laziness)",
+                "label": "Laziness Level (Bias)",
                 "id": "b",
                 "default": 2.0,
                 "min": -5,
                 "max": 5,
                 "step": 0.5
             },
-            "codeSnippet": "# The Formula for Decision Making\n\n# 1. Multiply inputs by their importance (weight)\nweighted_sum = (sleep * w_sleep) + (attendance * w_attendance)...\n\n# 2. Add Bias (a simpler helper)\ntotal_score = weighted_sum + bias\n\n# 3. Squish it between 0 and 1 (Sigmoid)\nfinal_decision = 1 / (1 + e^-total_score)"
+            "codeSnippet": "# Decision Logic:\n# calculate score = (Sleep * Importance) + (Rain * Importance) ...\n\n# If score is high -> YES (1)\n# If score is low -> NO (0)"
         },
         {
             "id": 3,
             "title": "Level 3: Learning from Mistakes",
-            "description": "How does the AI learn? It tries, fails, and fixes itself. This is called 'Gradient Descent'.",
-            "instruction": "We are stuck on 'Mount Error'. Click 'Train' to step down the mountain towards the valley of perfect answers (Minimum Error).",
+            "description": "How does AI learn? It makes a guess, checks the error, and adjusts itself.",
+            "instruction": "The ball is the AI's 'Error'. Click 'Train' to make the error go down to zero.",
             "learningRate": 0.01,
             "targetY": 1,
             "startWeight": -4,
-            "codeSnippet": "# Training Loop (Learning)\n\n# 1. Check how wrong we are (Loss)\nmistake = (prediction - answer)**2\n\n# 2. Find which way is 'downhill' (Gradient)\nslope = 2 * (prediction - answer) * input\n\n# 3. Update the weight to be better next time\nweight = weight - (learning_rate * slope)"
+            "codeSnippet": "# Training Loop:\n# 1. Measure Error (Mistake)\nmistake = (prediction - answer)**2\n\n# 2. Adjust Weight to reduce mistake\nweight = weight - (learning_rate * slope)"
         },
         {
             "id": 4,
-            "title": "Level 4: Deep Learning (Pizza Brain)",
-            "description": "One neuron is simple. Many neurons together (a Network) can do complex things, like inventing a pizza recipe!",
-            "instruction": "Hover over the layers to see how raw ingredients allow the network to 'learn' features like 'dough' and 'sauce'.",
+            "title": "Level 4: The Pizza Brain (Deep Learning)",
+            "description": "One neuron is too simple. A whole network of neurons can learn complex recipes!",
+            "instruction": "Hover over the circles to see how ingredients become a Pizza.",
             "layers": [
-                "Input Layer (Raw Ingredients)",
-                "Hidden Layer (Combinations)",
-                "Output Layer (Pizza Quality)"
+                "Ingredients",
+                "Kitchen Chefs",
+                "Final Pizza"
             ],
-            "codeSnippet": "# Deep Learning Network\n\nmodel = Sequential([\n  # Input: 3 Ingredients\n  Dense(4, activation='relu'),   # Hidden: Chefs mixing things\n  Dense(1, activation='sigmoid') # Output: Final Pizza Score\n])"
+            "codeSnippet": "# Neural Network for Pizza:\nmodel = Sequential([\n  Dense(4), # Chefs mixing ingredients\n  Dense(1)  # Final Taster deciding quality\n])"
         }
     ]
 }
