@@ -1,54 +1,120 @@
 {
-  "appTitle": "Neural Nomad: The Path to Prediction",
-  "levels": [
-    {
-      "id": 1,
-      "title": "Level 1: The Bio-Link",
-      "description": "Connect the biological brain parts to their artificial intelligence counterparts.",
-      "instruction": "Drag the biological terms to the correct computer concept.",
-      "pairs": [
-        { "bio": "Dendrite", "comp": "Input (x)", "id": "pair1" },
-        { "bio": "Cell Body", "comp": "Summation (z)", "id": "pair2" },
-        { "bio": "Axon", "comp": "Output (y)", "id": "pair3" },
-        { "bio": "Synapse", "comp": "Weight (w)", "id": "pair4" }
-      ],
-      "codeSnippet": "# Keras/TensorFlow Equivalent\n# Inputs (Dendrites)\ninputs = tf.keras.Input(shape=(3,))\n# Weights (Synapses) are initialized automatically\n# The Node (Cell Body) sums them up"
-    },
-    {
-      "id": 2,
-      "title": "Level 2: The Vibe Score",
-      "description": "Tune the weights and bias to decide: Should I go to class?",
-      "instruction": "Adjust weights and bias to see how they affect the decision. Try to get a high Vibe Score!",
-      "inputs": [
-        { "label": "Sleep (Hours)", "id": "x1", "default": 8, "min": 0, "max": 12 },
-        { "label": "Attendance (%)", "id": "x2", "default": 90, "min": 0, "max": 100 },
-        { "label": "Rain (0=No, 1=Yes)", "id": "x3", "default": 0, "min": 0, "max": 1 }
-      ],
-      "weights": [
-        { "label": "Weight: Sleep", "id": "w1", "default": 0.3, "min": -1, "max": 1, "step": 0.1 },
-        { "label": "Weight: Attendance", "id": "w2", "default": -0.5, "min": -1, "max": 1, "step": 0.1 },
-        { "label": "Weight: Rain", "id": "w3", "default": 0.8, "min": -1, "max": 1, "step": 0.1 }
-      ],
-      "bias": { "label": "Bias (Laziness)", "id": "b", "default": 2.0, "min": -5, "max": 5, "step": 0.5 },
-      "codeSnippet": "# Perceptron Calculation\nz = (w1*x1) + (w2*x2) + (w3*x3) + b\n\n# Activation Function (Sigmoid)\noutput = 1 / (1 + np.exp(-z))"
-    },
-    {
-      "id": 3,
-      "title": "Level 3: The Mountain Descent",
-      "description": "Minimize the error by descending the Loss Mountain.",
-      "instruction": "Click 'Train' to update weights and slide down the error curve.",
-      "learningRate": 0.01,
-      "targetY": 1,
-      "startWeight": -4,
-      "codeSnippet": "# Gradient Descent Step\nloss = (y_pred - y_true)**2\ngradient = 2 * (y_pred - y_true) * input\nweight = weight - (learning_rate * gradient)"
-    },
-    {
-      "id": 4,
-      "title": "Level 4: The Pizza Factory",
-      "description": "Deep Learning: From Ingredients to Pizza.",
-      "instruction": "Hover over the layers to see how features are transformed.",
-      "layers": ["Input Layer (Ingredients)", "Hidden Layer (Chefs)", "Output Layer (Pizza)"],
-      "codeSnippet": "# Multi-Layer Perceptron (MLP)\nmodel = tf.keras.Sequential([\n  tf.keras.layers.Dense(4, activation='relu'), # Hidden Layer\n  tf.keras.layers.Dense(1, activation='sigmoid') # Output Layer\n])"
-    }
-  ]
+    "appTitle": "Neural Network: The Path to Prediction",
+    "levels": [
+        {
+            "id": 1,
+            "title": "Level 1: The Bio-Link (Brain vs. Computer)",
+            "description": "Your brain uses biology to think. AI uses math. They are surprisingly similar!",
+            "instruction": "Match the biological part to what it does in an AI. Drag the terms on the left to the definitions on the right.",
+            "pairs": [
+                {
+                    "bio": "Dendrite (Receivers)",
+                    "comp": "Input (Receives Data)",
+                    "id": "pair1"
+                },
+                {
+                    "bio": "Cell Body (Processor)",
+                    "comp": "Summation (Adds it up)",
+                    "id": "pair2"
+                },
+                {
+                    "bio": "Axon (Sender)",
+                    "comp": "Output (Final Answer)",
+                    "id": "pair3"
+                },
+                {
+                    "bio": "Synapse (Connection Strength)",
+                    "comp": "Weight (Importance)",
+                    "id": "pair4"
+                }
+            ],
+            "codeSnippet": "# 1. Inputs: Like Dendrites, they catch information.\ninputs = [1.0, 0.5, -1.0]\n\n# 2. Weights: Like Synapses, they decide importance.\nweights = [0.8, 0.1, 0.5]\n\n# 3. Summation: The Cell Body thinks!\n# (We'll do this math in the next level)"
+        },
+        {
+            "id": 2,
+            "title": "Level 2: The Decision Maker",
+            "description": "This single neuron (Perceptron) decides: 'Should I go to class?' based on sleep, attendance, and rain.",
+            "instruction": "Adjust the 'Importance' (Weights) of each factor. Try to get the output above 0.5 to say YES!",
+            "inputs": [
+                {
+                    "label": "How much Sleep? (Hours)",
+                    "id": "x1",
+                    "default": 8,
+                    "min": 0,
+                    "max": 12
+                },
+                {
+                    "label": "Current Attendance (%)",
+                    "id": "x2",
+                    "default": 90,
+                    "min": 0,
+                    "max": 100
+                },
+                {
+                    "label": "Is it Raining? (0=No, 1=Yes)",
+                    "id": "x3",
+                    "default": 0,
+                    "min": 0,
+                    "max": 1
+                }
+            ],
+            "weights": [
+                {
+                    "label": "Importance of Sleep",
+                    "id": "w1",
+                    "default": 0.3,
+                    "min": -1,
+                    "max": 1,
+                    "step": 0.1
+                },
+                {
+                    "label": "Importance of Attendance",
+                    "id": "w2",
+                    "default": -0.5,
+                    "min": -1,
+                    "max": 1,
+                    "step": 0.1
+                },
+                {
+                    "label": "Importance of Rain",
+                    "id": "w3",
+                    "default": 0.8,
+                    "min": -1,
+                    "max": 1,
+                    "step": 0.1
+                }
+            ],
+            "bias": {
+                "label": "Bias (Base Laziness)",
+                "id": "b",
+                "default": 2.0,
+                "min": -5,
+                "max": 5,
+                "step": 0.5
+            },
+            "codeSnippet": "# The Formula for Decision Making\n\n# 1. Multiply inputs by their importance (weight)\nweighted_sum = (sleep * w_sleep) + (attendance * w_attendance)...\n\n# 2. Add Bias (a simpler helper)\ntotal_score = weighted_sum + bias\n\n# 3. Squish it between 0 and 1 (Sigmoid)\nfinal_decision = 1 / (1 + e^-total_score)"
+        },
+        {
+            "id": 3,
+            "title": "Level 3: Learning from Mistakes",
+            "description": "How does the AI learn? It tries, fails, and fixes itself. This is called 'Gradient Descent'.",
+            "instruction": "We are stuck on 'Mount Error'. Click 'Train' to step down the mountain towards the valley of perfect answers (Minimum Error).",
+            "learningRate": 0.01,
+            "targetY": 1,
+            "startWeight": -4,
+            "codeSnippet": "# Training Loop (Learning)\n\n# 1. Check how wrong we are (Loss)\nmistake = (prediction - answer)**2\n\n# 2. Find which way is 'downhill' (Gradient)\nslope = 2 * (prediction - answer) * input\n\n# 3. Update the weight to be better next time\nweight = weight - (learning_rate * slope)"
+        },
+        {
+            "id": 4,
+            "title": "Level 4: Deep Learning (Pizza Brain)",
+            "description": "One neuron is simple. Many neurons together (a Network) can do complex things, like inventing a pizza recipe!",
+            "instruction": "Hover over the layers to see how raw ingredients allow the network to 'learn' features like 'dough' and 'sauce'.",
+            "layers": [
+                "Input Layer (Raw Ingredients)",
+                "Hidden Layer (Combinations)",
+                "Output Layer (Pizza Quality)"
+            ],
+            "codeSnippet": "# Deep Learning Network\n\nmodel = Sequential([\n  # Input: 3 Ingredients\n  Dense(4, activation='relu'),   # Hidden: Chefs mixing things\n  Dense(1, activation='sigmoid') # Output: Final Pizza Score\n])"
+        }
+    ]
 }
