@@ -3,22 +3,22 @@
     "levels": [
         {
             "id": 1,
-            "title": "Level 1: Brain vs. Computer",
+            "title": "Brain vs. Computer",
             "description": "Computers try to copy how our brains work. Let's translate 'Biology' into 'Computer Logic'.",
             "instruction": "Drag the human body part to its computer equivalent.",
             "pairs": [
                 {
-                    "bio": "Eyes & Ears (Sensors)",
+                    "bio": "Eyes & Ears",
                     "comp": "Inputs (x)",
                     "id": "pair1"
                 },
                 {
-                    "bio": "Brain Neurons (Thinking)",
+                    "bio": "Brain Neurons",
                     "comp": "Processing (Summation)",
                     "id": "pair2"
                 },
                 {
-                    "bio": "Mouth/Hands (Action)",
+                    "bio": "Mouth/Hands",
                     "comp": "Output (y)",
                     "id": "pair3"
                 },
@@ -32,7 +32,7 @@
         },
         {
             "id": 2,
-            "title": "Level 2: The Decision Maker",
+            "title": "The Decision Maker",
             "description": "This simple AI decides: 'Should I go to class?' based on 3 things.",
             "instruction": "Adjust the 'Importance' sliders (Weights) to change the decision.",
             "inputs": [
@@ -96,7 +96,7 @@
         },
         {
             "id": 3,
-            "title": "Level 3: Learning from Mistakes",
+            "title": "Learning from Mistakes",
             "description": "How does AI learn? It makes a guess, checks the error, and adjusts itself.",
             "instruction": "The ball is the AI's 'Error'. Click 'Train' to make the error go down to zero.",
             "learningRate": 0.01,
@@ -106,7 +106,7 @@
         },
         {
             "id": 4,
-            "title": "Level 4: The Pizza Brain (Deep Learning)",
+            "title": "The Pizza Brain (Deep Learning)",
             "description": "One neuron is too simple. A whole network of neurons can learn complex recipes!",
             "instruction": "Hover over the circles to see how ingredients become a Pizza.",
             "layers": [
